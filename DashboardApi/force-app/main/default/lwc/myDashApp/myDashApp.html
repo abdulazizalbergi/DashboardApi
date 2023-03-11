@@ -35,8 +35,8 @@
                 <div class="box-container">
                     <h1>Covid Data by Country</h1>
                     <div class="toggle-container">
-                        <div data-name="LIST" onclick={listHandler}>List</div>
-                        <div onclick={listHandler}>Chart</div>
+                        <div data-name="LIST" class={isListSelected} onclick={listHandler}>List</div>
+                        <div data-name="CHART" class={isChartSelected} onclick={listHandler}>Chart</div>
                     </div>
                 </div>
             </div>

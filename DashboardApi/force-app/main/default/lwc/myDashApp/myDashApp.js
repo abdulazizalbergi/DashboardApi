@@ -13,6 +13,12 @@ export default class MyDashApp extends LightningElement {
     @track total = initialValue;
     @track defaultView = "LIST";
     @track showListView = true;
+    get isListSelected(){
+       return this.defaultView === "LIST" ? "active":""
+    }
+    get isChartSelected(){
+      return this.defaultView === "CHART" ? "active":""
+   }
     connectedCallback(){
         this.fetchData();
     }
@@ -20,8 +26,24 @@ export default class MyDashApp extends LightningElement {
         this.formatData(JsonObj);
     }
     formatData(result){
+       let individualSum = {}
         result.features.forEach(data => {
             let item = data["attributes"]; 
+            let obj = {
+               Confirmed: item.Confirmed,
+               Active: item.Active,
+               Deaths: item.Deaths,
+               Recovered: item.Recovered,
+               Last_Update:item.Last_Update
+             };
+             if (item.Country_Region in individualSum) {
+               individualSum[item.Country_Region].Confirmed += obj.Confirmed;
+               individualSum[item.Country_Region].Active += obj.Active;
+               individualSum[item.Country_Region].Deaths += obj.Deaths;
+               individualSum[item.Country_Region].Recovered += obj.Recovered;
+             } else {
+               individualSum[item.Country_Region] = obj;
+             }
             this.total.total_active += item.Active;
             this.total.total_confirmed += item.Confirmed;
             this.total.total_deaths += item.Deaths;
@@ -39,12 +61,14 @@ export default class MyDashApp extends LightningElement {
         return (this.total.total_recovered/this.total.total_confirmed)*100;
     }
     listHandler(event){
+      this.defaultView = event.target.dataset.name;
        if(event.target.dataset.name === "LIST"){
           this.showListView = true;
        }else this.showListView = false;
          
       
     }
+
 }
 var JsonObj = {
     "objectIdFieldName":"OBJECTID",
