@@ -3,7 +3,9 @@ let initialValue = {
     total_deaths : 0,
     total_confirmed :0,
     total_active : 0,
-    total_recovered :0
+    total_recovered :0,
+    total_fatality_rate :0,
+    total_recovery_rate : 0
 
 }
 const URL = "https://services9.arcgis.com/N9p5hsImWXAccRNI/arcgis/rest/services/Z7biAeD8PAkqgmWhxG2A/FeatureServer/1/query?f=json&where=Confirmed%20%3E%200&outFields=Country_Region,Confirmed,Deaths,Recovered,Last_Update,Active&orderByFields=Confirmed%20desc";
@@ -22,8 +24,17 @@ export default class MyDashApp extends LightningElement {
             this.total.total_confirmed += item.Confirmed;
             this.total.total_deaths += item.Deaths;
             this.total.total_recovered += item.Recovered;
+            
         })
         console.log(JSON.stringify(this.total)); 
+        this.total.total_fatality_rate = this.getFRate().toFixed(2)+"%";
+        this.total.total_recovery_rate = this.getRRate().toFixed(2)+"%";
+    }
+    getFRate(){
+        return (this.total.total_deaths/this.total.total_confirmed)*100;
+    }
+    getRRate(){
+        return (this.total.total_recovered/this.total.total_confirmed)*100;
     }
 }
 var JsonObj = {
