@@ -13,6 +13,8 @@ export default class MyDashApp extends LightningElement {
     @track total = initialValue;
     @track defaultView = "LIST";
     @track showListView = true;
+    @track tableData = [];
+    @track filteredTableData = [];
     get isListSelected(){
        return this.defaultView === "LIST" ? "active":""
     }
@@ -49,26 +51,55 @@ export default class MyDashApp extends LightningElement {
             this.total.total_deaths += item.Deaths;
             this.total.total_recovered += item.Recovered;
             
-        })
+        });
         console.log(JSON.stringify(this.total)); 
         this.total.total_fatality_rate = this.getFRate().toFixed(2)+"%";
         this.total.total_recovery_rate = this.getRRate().toFixed(2)+"%";
+
+        let finalData = Object.keys(individualSum).map((data) =>{
+           let item = individualSum[data]
+           let formatedDate = new Date(item.Last_Update).toDateString();
+           let fatality_rate = this.getFRate(item).toFixed(2)+"%";
+           let recovery_rate = this.getRRate(item).toFixed(2)+"%";
+           return { ...item, "formatedDate":formatedDate,"fatality_rate":fatality_rate,
+                     "recovery_rate":recovery_rate,"Country_Region": data}
+        });
+        this.tableData = [...finalData];
+        this.filteredTableData = [...finalData];
     }
-    getFRate(){
-        return (this.total.total_deaths/this.total.total_confirmed)*100;
-    }
-    getRRate(){
-        return (this.total.total_recovered/this.total.total_confirmed)*100;
-    }
+    getFRate(item){
+      if(item){
+      return (item.Deaths / item.Confirmed)*100
+      } else {
+      return (this.total.total_deaths/this.total.total_confirmed)*100
+      }
+      
+}
+getRRate(item){
+      if(item){
+              return (item.Recovered / item.Confirmed)*100
+      } else {
+           return (this.total.total_recovered/this.total.total_confirmed)*100   
+      }
+      
+}
     listHandler(event){
       this.defaultView = event.target.dataset.name;
        if(event.target.dataset.name === "LIST"){
           this.showListView = true;
-       }else this.showListView = false;
-         
-      
+       }else this.showListView = false;  
     }
 
+    searchHandler(event){
+       let val = event.target.value;
+       if(val.trim()){
+          let filterData = this.tableData.filter(item => {
+             let country = item.Country_Region ?item.Country_Region.toLowerCase():item.Country_Region;
+             return country.includes(val)
+          });
+          this.filteredTableData = [...filterData];
+       }else this.filteredTableData = [...this.tableData];
+    }
 }
 var JsonObj = {
     "objectIdFieldName":"OBJECTID",

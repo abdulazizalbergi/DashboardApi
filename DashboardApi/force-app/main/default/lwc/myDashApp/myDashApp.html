@@ -41,7 +41,54 @@
                 </div>
             </div>
         </div>
-        <template if:true={showListView}>I'm List View</template>
+        <template if:true={showListView}>
+            <div class="slds-m-left_medium slds-m-right_medium slds-m-bottom_medium">
+                <div class="slds-p-around_medium lgc-bg">
+                    <label class="label-text">Enter Your Country Name</label>
+                    <lightning-input 
+                    type="text"
+                    autocomplete="off"
+                    label="EnterYour Country Name"
+                    variant="label-hidden" 
+                    onkeyup={searchHandler}></lightning-input> 
+                </div>
+            </div> 
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Country Name</th>
+                        <th>Confirmed</th>
+                        <th>Active</th>
+                        <th>Recovered</th>
+                        <th>Deaths</th>
+                        <th>Fatality Rate</th>
+                        <th>Recovery Rate</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={filteredTableData} for:item="item">
+                        <tr key={item.Country_Region}>
+                            <td class="countryName">{item.Country_Region}</td>
+                            <td>{item.Confirmed}</td>
+                            <td>{item.Active}</td>
+                            <td>{item.Recovered}</td>
+                            <td>{item.Deaths}</td>
+                            <td>{item.fatality_rate}</td>
+                            <td>{item.recovery_rate}</td>
+                            <td>{item.formatedDate}</td>
+
+                        </tr>
+                    </template>
+                    <template if:false={filteredTableData.length}>
+                        <div>No data found</div>
+                    </template>
+                </tbody>
+            </table>
+        </template>
         <template if:false={showListView}>I'm Chart View</template>
+        <footer>
+            <sapn>Built By Abdul Aziz</sapn>
+        </footer>
     </div>
 </template>
