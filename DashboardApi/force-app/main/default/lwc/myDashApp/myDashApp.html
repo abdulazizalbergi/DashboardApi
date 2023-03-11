@@ -1,32 +1,47 @@
 <template>
     <div class="app-container">
-    <header>Covid-19 Global Cases tracking using LWC</header>
-    <div class="slds-m-top_large slds-p-left_small slds-p-right_small slds-grid slds-gutters slds-wrap space">
-        <div class="slds-col bg-primary slds-p-around_small slds-m-around_small">
-            <div class="slds-text-align_center slds-text-heading_medium white-color">Total Confirmed</div>
-            <div class="slds-text-align_center slds-text-heading_large white-color">{total.total_confirmed}</div>
+        <header>Covid-19 Global Cases tracking using LWC</header>
+        <div class="slds-m-top_large slds-p-left_small slds-p-right_small slds-grid slds-gutters slds-wrap space">
+            <div class="slds-col bg-primary slds-p-around_small slds-m-around_small">
+                <div class="slds-text-align_center slds-text-heading_medium white-color">Total Confirmed</div>
+                <div class="slds-text-align_center slds-text-heading_large white-color">{total.total_confirmed}</div>
+            </div>
+            <div class="slds-col bg-warning slds-p-around_small slds-m-around_small">
+                <div class="slds-text-align_center slds-text-heading_medium white-color">Total Active</div>
+                <div class="slds-text-align_center slds-text-heading_large white-color">{total.total_active}</div>
+            </div>
+            <div class="slds-col bg-success slds-p-around_small slds-m-around_small">
+                <div class="slds-text-align_center slds-text-heading_medium white-color">Total Recovered</div>
+                <div class="slds-text-align_center slds-text-heading_large white-color">{total.total_recovered}</div>
+            </div>
+            <div class="slds-col bg-danger slds-p-around_small slds-m-around_small">
+                <div class="slds-text-align_center slds-text-heading_medium white-color">Total Deaths</div>
+                <div class="slds-text-align_center slds-text-heading_large white-color">{total.total_deaths}</div>
+            </div>
+            <div class="slds-col bg-info slds-p-around_small slds-m-around_small">
+                <div class="slds-text-align_center slds-text-heading_medium white-color">Fatality Rate</div>
+                <div class="slds-text-align_center slds-text-heading_large white-color">{total.total_fatality_rate}
+                </div>
+            </div>
+            <div class="slds-col bg-secondary slds-p-around_small slds-m-around_small">
+                <div class="slds-text-align_center slds-text-heading_medium white-color">Recovery Rate</div>
+                <div class="slds-text-align_center slds-text-heading_large white-color">{total.total_recovery_rate}
+                </div>
+            </div>
         </div>
-        <div class="slds-col bg-warning slds-p-around_small slds-m-around_small">
-             <div class="slds-text-align_center slds-text-heading_medium white-color">Total Active</div>
-             <div class="slds-text-align_center slds-text-heading_large white-color">{total.total_active}</div>
+        <!--card for heading and toggle view-->
+        <div class="slds-m-left_medium slds-m-right_medium">
+            <div class="slds-p-around_medium lgc-bg">
+                <div class="box-container">
+                    <h1>Covid Data by Country</h1>
+                    <div class="toggle-container">
+                        <div data-name="LIST" onclick={listHandler}>List</div>
+                        <div onclick={listHandler}>Chart</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="slds-col bg-success slds-p-around_small slds-m-around_small">
-            <div class="slds-text-align_center slds-text-heading_medium white-color">Total Recovered</div>
-            <div class="slds-text-align_center slds-text-heading_large white-color">{total.total_recovered}</div>
-        </div>
-        <div class="slds-col bg-danger slds-p-around_small slds-m-around_small">
-            <div class="slds-text-align_center slds-text-heading_medium white-color">Total Deaths</div>
-            <div class="slds-text-align_center slds-text-heading_large white-color">{total.total_deaths}</div>
-        </div>
-        <div class="slds-col bg-info slds-p-around_small slds-m-around_small">
-            <div class="slds-text-align_center slds-text-heading_medium white-color">Fatality Rate</div>
-            <div class="slds-text-align_center slds-text-heading_large white-color">{total.total_fatality_rate}</div>
-        </div>
-        <div class="slds-col bg-secondary slds-p-around_small slds-m-around_small">
-            <div class="slds-text-align_center slds-text-heading_medium white-color">Recovery Rate</div>
-            <div class="slds-text-align_center slds-text-heading_large white-color">{total.total_recovery_rate}</div>
-        </div>
+        <template if:true={showListView}>I'm List View</template>
+        <template if:false={showListView}>I'm Chart View</template>
     </div>
-          
-</div>
 </template>

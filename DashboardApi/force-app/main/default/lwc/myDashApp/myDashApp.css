@@ -143,7 +143,6 @@ background-color:#ffac41;
 .toggle-container{
     display: flex;
     justify-content: flex-end;
-  
     color:#fff;
 }
 .toggle-container>div{

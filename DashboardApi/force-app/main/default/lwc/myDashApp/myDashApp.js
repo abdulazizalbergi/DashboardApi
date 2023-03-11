@@ -11,6 +11,8 @@ let initialValue = {
 const URL = "https://services9.arcgis.com/N9p5hsImWXAccRNI/arcgis/rest/services/Z7biAeD8PAkqgmWhxG2A/FeatureServer/1/query?f=json&where=Confirmed%20%3E%200&outFields=Country_Region,Confirmed,Deaths,Recovered,Last_Update,Active&orderByFields=Confirmed%20desc";
 export default class MyDashApp extends LightningElement {
     @track total = initialValue;
+    @track defaultView = "LIST";
+    @track showListView = true;
     connectedCallback(){
         this.fetchData();
     }
@@ -35,6 +37,13 @@ export default class MyDashApp extends LightningElement {
     }
     getRRate(){
         return (this.total.total_recovered/this.total.total_confirmed)*100;
+    }
+    listHandler(event){
+       if(event.target.dataset.name === "LIST"){
+          this.showListView = true;
+       }else this.showListView = false;
+         
+      
     }
 }
 var JsonObj = {
